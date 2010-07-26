@@ -71,8 +71,11 @@ begin
     end
   end
 rescue Exception => e
-  # todo: do something with exceptions
+  # todo: do something with exceptions.
   p e
+  puts "Retrying in 2 seconds..."
+  sleep 2
+  retry
 end
 
 exit
