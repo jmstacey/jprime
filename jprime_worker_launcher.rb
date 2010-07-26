@@ -5,18 +5,19 @@
 # Copyright:: Copyright (c) 2010 Jon Stacey
 # License::   Distributes under the same terms as Ruby
 
-ruby_path = `which ruby1.9`
+# Determine ruby path
+ruby_path = ENV["_"]
 
+# Determine operating system and CPU count
 if RUBY_PLATFORM.downcase.include?("darwin")
   cpu_count = `hwprefs cpu_count`
 elsif RUBY_PLATFORM.downcase.include?("linux")
   cpu_count = `cat /proc/cpuinfo | grep processor | wc -l`
 end
-
 cpu_count = Integer(cpu_count)
-  
+
 cpu_count.times do |i|
-  pid = fork { system "#{ruby_path} jprime_client_worker.rb" }
+  pid = fork { system "#{ruby_path} jprime_worker.rb" }
   Process.detach(pid)
   
   puts "Process #{i + 1} started."
