@@ -11,42 +11,6 @@ require 'zlib'
 require 'lib/jprime_tools'
 # require 'profile'
 
-# Generate primes between m <-> n
-def generate_primes(m, n, multiples)
-  puts "Generating primes between #{m} and #{n}"
-  
-  m = 2 if m < 2        # safety check, silly users
-
-  cap   = Math.sqrt(n) + 1
-  primes = (m..n).to_a
-
-  i = 0
-  while i < multiples.length
-    p = multiples[i]
-    i += 1
-    
-    break if p >= cap
-    
-    if (p >= m)
-      start = p*2
-    else 
-      start = m + ((p - m % p)%p)
-    end
-
-    j = start
-    while j <= n
-      primes[j-m] = nil
-      j += p
-    end
-  end
-  
-  return primes.compact
-end
-
-##############################
-# Worker stuff               #
-##############################
-
 DRb.start_service
 ts        = Rinda::RingFinger.primary 
 multiples = (ts.read [:multiples, nil])[1]
